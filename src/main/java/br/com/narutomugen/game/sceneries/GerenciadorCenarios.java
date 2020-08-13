@@ -1,4 +1,4 @@
-package br.com.narutomugen.game;
+package br.com.narutomugen.game.sceneries;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package br.com.narutomugen.game;
+package br.com.narutomugen.game.events.player;
 
 public enum ETipoControle
 {

@@ -1,6 +1,6 @@
-package br.com.narutomugen.game;
+package br.com.narutomugen.game.entities.character;
 
-/* Enum que tipifica as direções do personagem*/
+/* Enum que tipifica as direï¿½ï¿½es do personagem*/
 public enum EDirecao
 {
     DIREITA(0), ESQUERDA(1);
