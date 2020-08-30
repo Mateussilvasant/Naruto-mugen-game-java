@@ -38,8 +38,8 @@ public class Particula {
     }
 
     public void render(GraphicsContext g) {
-        g.setGlobalAlpha(vida);
-        g.setGlobalBlendMode(blendMode);
+        //g.setGlobalAlpha(vida);
+        //g.setGlobalBlendMode(blendMode);
         g.setFill(cor);
         g.fillOval(x, y, raio, raio);
     }

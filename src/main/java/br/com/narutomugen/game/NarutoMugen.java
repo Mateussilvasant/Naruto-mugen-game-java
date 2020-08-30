@@ -2,7 +2,7 @@ package br.com.narutomugen.game;
 
 import br.com.narutomugen.game.app.JogoAdapter;
 import br.com.narutomugen.game.app.JogoApp;
-import br.com.narutomugen.game.entities.chars.HatakeKakashi;
+import br.com.narutomugen.game.entities.character.chars.HatakeKakashi;
 import br.com.narutomugen.game.events.player.ETipoControle;
 import br.com.narutomugen.game.events.player.Jogador;
 import br.com.narutomugen.game.sceneries.GerenciadorCenarios;
@@ -53,11 +53,11 @@ public class NarutoMugen extends JogoAdapter {
 	public void atualizar() {
 		limparContexto();
 		cenario();
-		playerOne.atualizarMecanicas();
-		playerTwo.atualizarMecanicas();
 
+
+		playerOne.atualizarMecanicas();
 		playerOne.atualizarAnimacoes();
-		playerTwo.atualizarAnimacoes();
+
 
 		getJogoApp().getEstagio().setTitle("FPS: " + getFPS());
 	}

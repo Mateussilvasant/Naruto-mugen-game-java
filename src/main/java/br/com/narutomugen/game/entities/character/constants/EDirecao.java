@@ -1,4 +1,4 @@
-package br.com.narutomugen.game.entities.character;
+package br.com.narutomugen.game.entities.character.constants;
 
 /* Enum que tipifica as dire��es do personagem*/
 public enum EDirecao

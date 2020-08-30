@@ -1,12 +1,12 @@
-package br.com.narutomugen.game.states;
+package br.com.narutomugen.game.entities.character.actions;
 
-public enum ETipoEstado {
+public enum Actions {
 
     CORRER_DIREITA(0), CORRER_ESQUERDA(1), PARADO(2), PULAR(3), INICIAL(4), PODER_1(5);
 
     private int value;
 
-    private ETipoEstado(int value) {
+    private Actions(int value) {
         this.value = value;
     }
 

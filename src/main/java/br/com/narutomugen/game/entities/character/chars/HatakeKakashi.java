@@ -1,12 +1,12 @@
-package br.com.narutomugen.game.entities.chars;
+package br.com.narutomugen.game.entities.character.chars;
 
 import br.com.narutomugen.game.animation.Sprite;
 import br.com.narutomugen.game.entities.character.Personagem;
+import br.com.narutomugen.game.entities.character.actions.Actions;
 import br.com.narutomugen.game.graphics.Render;
 import br.com.narutomugen.game.graphics.textures.TexturaSprite;
+import br.com.narutomugen.game.manager.actions.ActionComponent;
 import br.com.narutomugen.game.particles.EmissorFogo;
-import br.com.narutomugen.game.states.ETipoEstado;
-import br.com.narutomugen.game.states.Estado;
 
 public class HatakeKakashi extends Personagem {
 
@@ -19,10 +19,10 @@ public class HatakeKakashi extends Personagem {
 	}
 
 	private void carregarEstados() {
-		controleEstado.adicionarEstado(new Estado(ETipoEstado.PODER_1) {
+		controleEstado.adicionarEstado(new ActionComponent(Actions.PODER_1) {
 
 			@Override
-			public boolean acaoEstado() {
+			public boolean action() {
 				katonJutsu.update(getEixoX(), getEixoY() - getWidth());
 				return false;
 			}
@@ -42,13 +42,13 @@ public class HatakeKakashi extends Personagem {
 		TexturaSprite texturaIntro = new TexturaSprite();
 		texturaIntro.carregarTextura("/personagens/kakashi/tiles/Intro", 1.0);
 
-		mapaSprites.put(ETipoEstado.CORRER_DIREITA.getValue(),
+		mapaSprites.put(Actions.CORRER_DIREITA.getValue(),
 				new Sprite(render, texturaCorrer, 7, invertido ? false : false));
-		mapaSprites.put(ETipoEstado.CORRER_ESQUERDA.getValue(),
+		mapaSprites.put(Actions.CORRER_ESQUERDA.getValue(),
 				new Sprite(render, texturaCorrer, 7, invertido ? true : true));
-		mapaSprites.put(ETipoEstado.PARADO.getValue(), new Sprite(render, texturaParado, 7, invertido));
-		mapaSprites.put(ETipoEstado.PULAR.getValue(), new Sprite(render, texturaPulando, 7, invertido));
-		mapaSprites.put(ETipoEstado.INICIAL.getValue(), new Sprite(render, texturaIntro, 1, invertido, false));
+		mapaSprites.put(Actions.PARADO.getValue(), new Sprite(render, texturaParado, 7, invertido));
+		mapaSprites.put(Actions.PULAR.getValue(), new Sprite(render, texturaPulando, 7, invertido));
+		mapaSprites.put(Actions.INICIAL.getValue(), new Sprite(render, texturaIntro, 1, invertido, false));
 
 		katonJutsu = new EmissorFogo(render);
 	}
@@ -59,22 +59,22 @@ public class HatakeKakashi extends Personagem {
 
 	@Override
 	public void executarPoder_1() {
-		controleEstado.transitar(ETipoEstado.PODER_1);
+		controleEstado.transitar(Actions.PODER_1);
 	}
 
 	@Override
 	public void atualizarAnimacoes() {
-		if (controleEstado.comparar(ETipoEstado.PODER_1)) {
-			controleEstado.getEstadoAtual().executarEstado();
+		if (controleEstado.comparar(Actions.PODER_1)) {
+			controleEstado.getEstadoAtual().dispatch();
 		}
 
 	}
 
 	public void parar() {
 
-		if (!controleEstado.verificaEstadoAtual(ETipoEstado.INICIAL.getValue())) {
-			if (!controleEstado.getEstadoAtual().getRepetir()) {
-				controleEstado.transitar(ETipoEstado.PARADO);
+		if (!controleEstado.verificaEstadoAtual(Actions.INICIAL.getValue())) {
+			if (!controleEstado.getEstadoAtual().isRepeat()) {
+				controleEstado.transitar(Actions.PARADO);
 				katonJutsu.resetar();
 			}
 		}

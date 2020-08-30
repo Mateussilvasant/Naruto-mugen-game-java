@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 import br.com.narutomugen.game.animation.Sprite;
 import br.com.narutomugen.game.engine.Motor;
-import br.com.narutomugen.game.states.ETipoEstado;
-import br.com.narutomugen.game.states.Estado;
-import br.com.narutomugen.game.states.MaquinaEstado;
+import br.com.narutomugen.game.entities.character.actions.Actions;
+import br.com.narutomugen.game.entities.character.constants.EDirecao;
+import br.com.narutomugen.game.manager.actions.ActionComponent;
 
 public abstract class Personagem {
 
@@ -22,7 +22,7 @@ public abstract class Personagem {
 
 	public Personagem(int x, int y, boolean inverter) {
 		mapaSprites = new HashMap<Integer, Sprite>();
-		controleEstado = new MaquinaEstado(ETipoEstado.values().length);
+		controleEstado = new MaquinaEstado(Actions.values().length);
 		inicioY = y;
 		forca = 20;
 		direcao = inverter ? EDirecao.ESQUERDA : EDirecao.DIREITA;
@@ -31,7 +31,7 @@ public abstract class Personagem {
 		setVelocidade(150);
 
 		iniciarEstados();
-		controleEstado.transitar(ETipoEstado.INICIAL);
+		controleEstado.transitar(Actions.INICIAL);
 	}
 
 	private void iniciarEstados() {
@@ -43,13 +43,13 @@ public abstract class Personagem {
 	}
 
 	private void estadoCorrerDireita() {
-		controleEstado.adicionarEstado(new Estado(ETipoEstado.CORRER_DIREITA) {
+		controleEstado.adicionarEstado(new ActionComponent(Actions.CORRER_DIREITA) {
 
 			@Override
-			public boolean acaoEstado() {
+			public boolean action() {
 				direcao = EDirecao.DIREITA;
 				eixoX = eixoX + (getVelocidade() * Motor.getDelta());
-				mapaSprites.get(ETipoEstado.CORRER_DIREITA.getValue()).animar(getEixoX(), getEixoY());
+				mapaSprites.get(Actions.CORRER_DIREITA.getValue()).animar(getEixoX(), getEixoY());
 				return false;
 			}
 		});
@@ -57,24 +57,24 @@ public abstract class Personagem {
 
 	private void estadoCorrerEsquerda() {
 
-		controleEstado.adicionarEstado(new Estado(ETipoEstado.CORRER_ESQUERDA) {
+		controleEstado.adicionarEstado(new ActionComponent(Actions.CORRER_ESQUERDA) {
 
 			@Override
-			public boolean acaoEstado() {
+			public boolean action() {
 				direcao = EDirecao.ESQUERDA;
 				eixoX = eixoX - (getVelocidade() * Motor.getDelta());
-				mapaSprites.get(ETipoEstado.CORRER_ESQUERDA.getValue()).animar(getEixoX(), getEixoY());
+				mapaSprites.get(Actions.CORRER_ESQUERDA.getValue()).animar(getEixoX(), getEixoY());
 				return false;
 			}
 		});
 	}
 
 	private void estadoParado() {
-		controleEstado.adicionarEstado(new Estado(ETipoEstado.PARADO) {
+		controleEstado.adicionarEstado(new ActionComponent(Actions.PARADO) {
 
 			@Override
-			public boolean acaoEstado() {
-				Sprite paradoSprite = mapaSprites.get(ETipoEstado.PARADO.getValue());
+			public boolean action() {
+				Sprite paradoSprite = mapaSprites.get(Actions.PARADO.getValue());
 				verificarDirecaoSprite(paradoSprite);
 				paradoSprite.animar(getEixoX(), getEixoY());
 				return true;
@@ -84,11 +84,11 @@ public abstract class Personagem {
 
 	private void estadoPular() {
 
-		controleEstado.adicionarEstado(new Estado(ETipoEstado.PULAR) {
+		controleEstado.adicionarEstado(new ActionComponent(Actions.PULAR) {
 
 			@Override
-			public boolean acaoEstado() {
-				Sprite spritePular = mapaSprites.get(ETipoEstado.PULAR.getValue());
+			public boolean action() {
+				Sprite spritePular = mapaSprites.get(Actions.PULAR.getValue());
 				verificarDirecaoSprite(spritePular);
 
 				forca--;
@@ -97,7 +97,7 @@ public abstract class Personagem {
 				if (getEixoY() == inicioY) {
 					forca = 20;
 					spritePular.animar(1, getEixoX(), getEixoY());
-					controleEstado.transitar(ETipoEstado.PARADO);
+					controleEstado.transitar(Actions.PARADO);
 				} else if (forca > 0) {
 					spritePular.animar(2, getEixoX(), getEixoY());
 
@@ -113,15 +113,15 @@ public abstract class Personagem {
 
 	private void estadoInicial() {
 
-		controleEstado.adicionarEstado(new Estado(ETipoEstado.INICIAL) {
+		controleEstado.adicionarEstado(new ActionComponent(Actions.INICIAL) {
 
 			@Override
-			public boolean acaoEstado() {
-				Sprite spriteInicial = mapaSprites.get(ETipoEstado.INICIAL.getValue());
+			public boolean action() {
+				Sprite spriteInicial = mapaSprites.get(Actions.INICIAL.getValue());
 				spriteInicial.animar(getEixoX(), getEixoY());
 
 				if (spriteInicial.fimAnimacao()) {
-					controleEstado.transitar(ETipoEstado.PARADO);
+					controleEstado.transitar(Actions.PARADO);
 				}
 				return true;
 			}
@@ -144,53 +144,34 @@ public abstract class Personagem {
 	}
 
 	public void parar() {
-		if (!controleEstado.verificaEstadoAtual(ETipoEstado.INICIAL.getValue())) {
-			if (!controleEstado.getEstadoAtual().getRepetir()) {
-				controleEstado.transitar(ETipoEstado.PARADO);
+		if (!controleEstado.verificaEstadoAtual(Actions.INICIAL.getValue())) {
+			if (!controleEstado.getEstadoAtual().isRepeat()) {
+				controleEstado.transitar(Actions.PARADO);
 			}
 		}
 
 	}
 
 	public void atualizarMecanicas() {
-		// System.out.println("Estado Atual: " +
-		// controleEstado.getEstadoAtual().estadoID + " Estado Anterior: "
-		// + controleEstado.getEstadoAnterior().estadoID);
+		System.out.println("Estado Atual: " + controleEstado.getEstadoAtual().getId() + " Estado Anterior: "+ controleEstado.getEstadoAnterior().getId());
 
-		if (controleEstado.comparar(ETipoEstado.CORRER_DIREITA)) {
-			controleEstado.getEstadoAtual().executarEstado();
-		}
+		controleEstado.getEstadoAtual().dispatch();
 
-		if (controleEstado.comparar(ETipoEstado.CORRER_ESQUERDA)) {
-			controleEstado.getEstadoAtual().executarEstado();
-		}
-
-		if (controleEstado.comparar(ETipoEstado.PARADO)) {
-			controleEstado.getEstadoAtual().executarEstado();
-		}
-
-		if (controleEstado.comparar(ETipoEstado.INICIAL)) {
-			controleEstado.getEstadoAtual().executarEstado();
-		}
-
-		if (controleEstado.comparar(ETipoEstado.PULAR)) {
-			controleEstado.getEstadoAtual().executarEstado();
-		}
 
 	}
 
 	public abstract void atualizarAnimacoes();
 
 	public void correrParaDireita() {
-		controleEstado.transitar(ETipoEstado.CORRER_DIREITA);
+		controleEstado.transitar(Actions.CORRER_DIREITA);
 	}
 
 	public void correrParaEsquerda() {
-		controleEstado.transitar(ETipoEstado.CORRER_ESQUERDA);
+		controleEstado.transitar(Actions.CORRER_ESQUERDA);
 	}
 
 	public void pularParaCima() {
-		controleEstado.transitar(ETipoEstado.PULAR);
+		controleEstado.transitar(Actions.PULAR);
 	}
 
 	public abstract void executarPoder_1();
@@ -216,7 +197,7 @@ public abstract class Personagem {
 	}
 
 	public double getWidth() {
-		return mapaSprites.get(controleEstado.getEstadoAnterior().getEstadoID()).getWidth();
+		return mapaSprites.get(controleEstado.getEstadoAnterior().getId()).getWidth();
 	}
 
 	public void setVelocidade(double velocidade) {
