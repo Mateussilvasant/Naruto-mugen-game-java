@@ -1,44 +1,46 @@
 package br.com.narutomugen.game.manager.states.store;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class SimpleStack<T> implements Store<T> {
 
-    private LinkedList<T> stack;
+    private List<T> stack;
     private int maxElements;
+    private int count = -1;
 
     public SimpleStack(int maxElements) {
-        stack = new LinkedList<T>();
+        stack = new ArrayList<T>();
         this.maxElements = maxElements;
     }
 
     @Override
     public T getLast() {
-        return stack.getLast();
+        if (stack.size() >= 1) {
+            return stack.get(0);
+        } else {
+            return null;
+        }
     }
 
     public T getPreviousLast() {
 
-        T last = stack.getLast();
-
         if (stack.size() >= 2) {
-
-            int index = stack.indexOf(last);
-
-            return stack.get(index - 1);
-
+            return stack.get(1);
+        } else {
+            return null;
         }
 
-        return null;
     }
 
     @Override
     public void store(T next) {
         if (!stack.contains(next)) {
 
-            if (stack.size() <= maxElements) {
-                stack.push(next);
+            if (stack.size() < maxElements) {
+                stack.add(next);
+                count++;
             }
 
         }
@@ -46,7 +48,7 @@ public class SimpleStack<T> implements Store<T> {
 
     @Override
     public void update() {
-        stack.removeLast();
+        stack.remove(0);
     }
 
     @Override
@@ -61,5 +63,10 @@ public class SimpleStack<T> implements Store<T> {
         }
 
     }
+
+    @Override
+	public List<T> getAllElements() {
+		return stack;
+	}
 
 }

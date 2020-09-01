@@ -46,5 +46,10 @@ public class State {
         return Objects.equals(id, state.id);
     }
 
+    @Override
+    public String toString() {
+        return "[" + id + "]";
+    }
+
 
 }

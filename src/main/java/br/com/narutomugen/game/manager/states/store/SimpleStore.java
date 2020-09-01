@@ -1,7 +1,10 @@
 package br.com.narutomugen.game.manager.states.store;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class SimpleStore<T> implements Store<T> {
- 
+
     private T value;
     private T oldValue;
 
@@ -17,10 +20,10 @@ public class SimpleStore<T> implements Store<T> {
 
     @Override
     public void store(T next) {
-       
-        if(value == null){
+
+        if (value == null) {
             value = next;
-        } else if(next != value){
+        } else if (next != value) {
             oldValue = value;
         } else {
             value = next;
@@ -35,14 +38,19 @@ public class SimpleStore<T> implements Store<T> {
 
     @Override
     public T contains(T t) {
-        
-        if(t.equals(value)){
+
+        if (t.equals(value)) {
             return value;
-        } else if(t.equals(oldValue)) {
+        } else if (t.equals(oldValue)) {
             return oldValue;
-        } 
+        }
 
         return null;
+    }
+
+    @Override
+    public List<T> getAllElements() {
+        return Arrays.asList(oldValue,value);
     }
 
 

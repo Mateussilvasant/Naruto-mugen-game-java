@@ -1,5 +1,7 @@
 package br.com.narutomugen.game.manager.states.store;
 
+import java.util.List;
+
 public interface Store<T> {
 
 	public T getLast();
@@ -11,6 +13,8 @@ public interface Store<T> {
 	public void update();
 
 	public T contains(T t);
+
+	List<T> getAllElements();
 
 
 }
