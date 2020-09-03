@@ -1,5 +1,7 @@
 package br.com.narutomugen.game.manager.states;
 
+import java.util.List;
+
 import br.com.narutomugen.game.manager.states.interfaces.IStateMachine;
 import br.com.narutomugen.game.manager.states.store.Store;
 
@@ -34,6 +36,8 @@ public class StateMachine<T> implements IStateMachine<T> {
         return states.contains(state);
     }
 
+    public List<T> allStates(){
+        return states.getAllElements();
+    }
 
-    
 }

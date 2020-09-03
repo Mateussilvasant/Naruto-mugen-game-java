@@ -7,8 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.narutomugen.game.entities.character.actions.Actions;
-import br.com.narutomugen.game.entities.character.manager.ActionEntityManager;
 import br.com.narutomugen.game.manager.actions.Action;
+import br.com.narutomugen.game.manager.actions.ActionController;
 import br.com.narutomugen.game.manager.actions.ActionResponse;
 import br.com.narutomugen.game.manager.actions.ActionState;
 import br.com.narutomugen.game.manager.actions.SubAction;
@@ -18,7 +18,7 @@ import br.com.narutomugen.game.manager.states.store.SimpleStack;
 
 public class ActionEntityManagerTest {
 
-    private ActionEntityManager actionEntityManager;
+    private ActionController actionEntityManager;
 
     private HashMap<Actions, ActionState> actions = new HashMap<>();
 
@@ -91,7 +91,7 @@ public class ActionEntityManagerTest {
 
         machineState = new StateMachine<>(store);
 
-        actionEntityManager = new ActionEntityManager(machineState, actions);
+        actionEntityManager = new ActionController(machineState, actions);
 
     }
 
