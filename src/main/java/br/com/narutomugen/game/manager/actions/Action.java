@@ -2,13 +2,13 @@ package br.com.narutomugen.game.manager.actions;
 
 import java.util.HashMap;
 
-import br.com.narutomugen.game.entities.character.actions.Actions;
+import br.com.narutomugen.game.entities.character.actions.ActionCommand;
 
 public abstract class Action extends ActionState {
 
-    public HashMap<Actions, SubAction> subActions;
+    public HashMap<ActionCommand, SubAction> subActions;
 
-    public Action(Actions actionID) {
+    public Action(ActionCommand actionID) {
         super(actionID);
         subActions = new HashMap<>();
     }
@@ -23,7 +23,7 @@ public abstract class Action extends ActionState {
        return action.getRepeatAction();    
     }
 
-    public HashMap<Actions,SubAction> getSubActions(){
+    public HashMap<ActionCommand,SubAction> getSubActions(){
         return subActions;
     }
 

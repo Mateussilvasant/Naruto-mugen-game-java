@@ -3,27 +3,31 @@ package br.com.narutomugen.game.manager.actions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
-import br.com.narutomugen.game.entities.character.actions.Actions;
+import br.com.narutomugen.game.entities.character.actions.ActionCommand;
 import br.com.narutomugen.game.manager.states.State;
 import br.com.narutomugen.game.manager.states.StateMachine;
 
 public abstract class ActionStateHolder {
 
-    protected HashMap<Actions, ActionState> actions;
+    protected HashMap<ActionCommand, ActionState> actions;
+
     protected StateMachine<State> stateManager;
+
     private int numbersExecutions = 2;
 
-    protected ActionStateHolder(StateMachine<State> stateManager, HashMap<Actions, ActionState> actions) {
+    protected ActionStateHolder(StateMachine<State> stateManager, HashMap<ActionCommand, ActionState> actions) {
         this.stateManager = stateManager;
         this.actions = actions;
     }
 
     protected abstract void registerAction(State state);
 
-    protected abstract void dispatchAction(ActionState actionState);
+    protected abstract void registerSubAction(State state);
 
+    protected abstract void dispatchAction(ActionState actionState);
 
     public void update() {
         updateMachine();
@@ -48,11 +52,13 @@ public abstract class ActionStateHolder {
 
     protected void updateMachine() {
 
-        ActionState current = stateToAction(stateManager.getCurrentState());
+        Optional<ActionState> current = getActionByState(stateManager.getCurrentState(), ActionState.class);
 
-        if (current != null) {
+        if (current.isPresent()) {
 
-            if (!current.isRepeat()) {
+            ActionState currentAction = current.get();
+
+            if (!currentAction.isRepeat()) {
                 stateManager.update();
             }
         }
@@ -61,12 +67,13 @@ public abstract class ActionStateHolder {
     protected List<ActionState> filterCurrentStates() {
 
         List<State> states = stateManager.allStates();
+
         List<ActionState> filteredStates = new ArrayList<ActionState>();
 
         for (int i = 0; i <= numbersExecutions - 1; i++) {
 
-            if(i < states.size()){
-                filteredStates.add(stateToAction(states.get(i)));
+            if (i < states.size()) {
+                filteredStates.add(getActionByState(states.get(i), ActionState.class).get());
             } else {
                 break;
             }
@@ -76,18 +83,26 @@ public abstract class ActionStateHolder {
         return filteredStates;
     }
 
-    protected ActionState stateToAction(State state) {
+    protected State getStateByAction(ActionState action) {
+        return new State(action.getId());
+    }
+
+    protected <T> Optional<T> getActionByState(State state, Class<T> clazz) {
 
         if (state != null) {
 
-            Actions action = Stream.of(Actions.values()).filter(a -> a.getValue() == state.id).findFirst().get();
-            return actions.get(action);
+            return actions.values().stream().filter(clazz::isInstance).filter(d -> d.id == state.id).map(clazz::cast)
+                    .findFirst();
+
         }
 
         return null;
     }
 
-    protected State actionToState(ActionState action) {
-        return new State(action.getId());
+    protected ActionCommand getCommand(Integer id) {
+
+        return Stream.of(ActionCommand.values()).filter(a -> a.getValue() == id).findFirst().get();
+
     }
+
 }

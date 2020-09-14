@@ -1,13 +1,13 @@
 package br.com.narutomugen.game.manager.actions;
 
-import br.com.narutomugen.game.entities.character.actions.Actions;
+import br.com.narutomugen.game.entities.character.actions.ActionCommand;
 
 public abstract class SubAction extends ActionState {
     
-    private final Actions parent;
+    private final ActionCommand parent;
     private boolean unattached;
 
-    public SubAction(final Actions actionID, final Actions parent, boolean unattached) {
+    public SubAction(final ActionCommand actionID, final ActionCommand parent, boolean unattached) {
         super(actionID);
         this.parent = parent;
         this.unattached = unattached;
@@ -27,7 +27,7 @@ public abstract class SubAction extends ActionState {
         return action.getRepeatAction();
     }
         
-    public Actions parent(){
+    public ActionCommand parent(){
         return parent;
     }
 

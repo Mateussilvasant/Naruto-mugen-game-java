@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import br.com.narutomugen.game.animation.Sprite;
 import br.com.narutomugen.game.engine.Motor;
-import br.com.narutomugen.game.entities.character.actions.Actions;
+import br.com.narutomugen.game.entities.character.actions.ActionCommand;
 import br.com.narutomugen.game.entities.character.constants.EDirecao;
 import br.com.narutomugen.game.manager.actions.ActionComponent;
 
@@ -22,7 +22,7 @@ public abstract class Personagem {
 
 	public Personagem(int x, int y, boolean inverter) {
 		mapaSprites = new HashMap<Integer, Sprite>();
-		controleEstado = new MaquinaEstado(Actions.values().length);
+		controleEstado = new MaquinaEstado(ActionCommand.values().length);
 		inicioY = y;
 		forca = 20;
 		direcao = inverter ? EDirecao.ESQUERDA : EDirecao.DIREITA;
@@ -31,7 +31,7 @@ public abstract class Personagem {
 		setVelocidade(150);
 
 		iniciarEstados();
-		controleEstado.transitar(Actions.INICIAL);
+		controleEstado.transitar(ActionCommand.INICIAL);
 	}
 
 	private void iniciarEstados() {
@@ -43,13 +43,13 @@ public abstract class Personagem {
 	}
 
 	private void estadoCorrerDireita() {
-		controleEstado.adicionarEstado(new ActionComponent(Actions.CORRER_DIREITA) {
+		controleEstado.adicionarEstado(new ActionComponent(ActionCommand.CORRER_DIREITA) {
 
 			@Override
 			public boolean action() {
 				direcao = EDirecao.DIREITA;
 				eixoX = eixoX + (getVelocidade() * Motor.getDelta());
-				mapaSprites.get(Actions.CORRER_DIREITA.getValue()).animar(getEixoX(), getEixoY());
+				mapaSprites.get(ActionCommand.CORRER_DIREITA.getValue()).animar(getEixoX(), getEixoY());
 				return false;
 			}
 		});
@@ -57,24 +57,24 @@ public abstract class Personagem {
 
 	private void estadoCorrerEsquerda() {
 
-		controleEstado.adicionarEstado(new ActionComponent(Actions.CORRER_ESQUERDA) {
+		controleEstado.adicionarEstado(new ActionComponent(ActionCommand.CORRER_ESQUERDA) {
 
 			@Override
 			public boolean action() {
 				direcao = EDirecao.ESQUERDA;
 				eixoX = eixoX - (getVelocidade() * Motor.getDelta());
-				mapaSprites.get(Actions.CORRER_ESQUERDA.getValue()).animar(getEixoX(), getEixoY());
+				mapaSprites.get(ActionCommand.CORRER_ESQUERDA.getValue()).animar(getEixoX(), getEixoY());
 				return false;
 			}
 		});
 	}
 
 	private void estadoParado() {
-		controleEstado.adicionarEstado(new ActionComponent(Actions.PARADO) {
+		controleEstado.adicionarEstado(new ActionComponent(ActionCommand.PARADO) {
 
 			@Override
 			public boolean action() {
-				Sprite paradoSprite = mapaSprites.get(Actions.PARADO.getValue());
+				Sprite paradoSprite = mapaSprites.get(ActionCommand.PARADO.getValue());
 				verificarDirecaoSprite(paradoSprite);
 				paradoSprite.animar(getEixoX(), getEixoY());
 				return true;
@@ -84,11 +84,11 @@ public abstract class Personagem {
 
 	private void estadoPular() {
 
-		controleEstado.adicionarEstado(new ActionComponent(Actions.PULAR) {
+		controleEstado.adicionarEstado(new ActionComponent(ActionCommand.PULAR) {
 
 			@Override
 			public boolean action() {
-				Sprite spritePular = mapaSprites.get(Actions.PULAR.getValue());
+				Sprite spritePular = mapaSprites.get(ActionCommand.PULAR.getValue());
 				verificarDirecaoSprite(spritePular);
 
 				forca--;
@@ -97,7 +97,7 @@ public abstract class Personagem {
 				if (getEixoY() == inicioY) {
 					forca = 20;
 					spritePular.animar(1, getEixoX(), getEixoY());
-					controleEstado.transitar(Actions.PARADO);
+					controleEstado.transitar(ActionCommand.PARADO);
 				} else if (forca > 0) {
 					spritePular.animar(2, getEixoX(), getEixoY());
 
@@ -113,15 +113,15 @@ public abstract class Personagem {
 
 	private void estadoInicial() {
 
-		controleEstado.adicionarEstado(new ActionComponent(Actions.INICIAL) {
+		controleEstado.adicionarEstado(new ActionComponent(ActionCommand.INICIAL) {
 
 			@Override
 			public boolean action() {
-				Sprite spriteInicial = mapaSprites.get(Actions.INICIAL.getValue());
+				Sprite spriteInicial = mapaSprites.get(ActionCommand.INICIAL.getValue());
 				spriteInicial.animar(getEixoX(), getEixoY());
 
 				if (spriteInicial.fimAnimacao()) {
-					controleEstado.transitar(Actions.PARADO);
+					controleEstado.transitar(ActionCommand.PARADO);
 				}
 				return true;
 			}
@@ -144,9 +144,9 @@ public abstract class Personagem {
 	}
 
 	public void parar() {
-		if (!controleEstado.verificaEstadoAtual(Actions.INICIAL.getValue())) {
+		if (!controleEstado.verificaEstadoAtual(ActionCommand.INICIAL.getValue())) {
 			if (!controleEstado.getEstadoAtual().isRepeat()) {
-				controleEstado.transitar(Actions.PARADO);
+				controleEstado.transitar(ActionCommand.PARADO);
 			}
 		}
 
@@ -163,15 +163,15 @@ public abstract class Personagem {
 	public abstract void atualizarAnimacoes();
 
 	public void correrParaDireita() {
-		controleEstado.transitar(Actions.CORRER_DIREITA);
+		controleEstado.transitar(ActionCommand.CORRER_DIREITA);
 	}
 
 	public void correrParaEsquerda() {
-		controleEstado.transitar(Actions.CORRER_ESQUERDA);
+		controleEstado.transitar(ActionCommand.CORRER_ESQUERDA);
 	}
 
 	public void pularParaCima() {
-		controleEstado.transitar(Actions.PULAR);
+		controleEstado.transitar(ActionCommand.PULAR);
 	}
 
 	public abstract void executarPoder_1();

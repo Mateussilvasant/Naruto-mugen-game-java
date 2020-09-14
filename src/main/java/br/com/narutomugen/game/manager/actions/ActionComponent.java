@@ -1,13 +1,13 @@
 package br.com.narutomugen.game.manager.actions;
 
-import br.com.narutomugen.game.entities.character.actions.Actions;
+import br.com.narutomugen.game.entities.character.actions.ActionCommand;
 
 public abstract class ActionComponent {
  
     protected int id;
     protected boolean isRepeat;
     
-    public ActionComponent(final Actions eTipoEstado) {
+    public ActionComponent(final ActionCommand eTipoEstado) {
         id = eTipoEstado.getValue();
         isRepeat = true;
     }

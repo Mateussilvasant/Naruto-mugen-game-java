@@ -1,6 +1,6 @@
 package br.com.narutomugen.game.manager.actions;
 
-import br.com.narutomugen.game.entities.character.actions.Actions;
+import br.com.narutomugen.game.entities.character.actions.ActionCommand;
 
 public abstract class ActionState {
  
@@ -10,7 +10,7 @@ public abstract class ActionState {
     protected boolean isSubAction;
 
 
-    public ActionState(final Actions actionID) {
+    public ActionState(final ActionCommand actionID) {
         id = actionID.getValue();
         isRepeat = true;
         isSubAction = false;
@@ -20,7 +20,7 @@ public abstract class ActionState {
 
     public abstract ActionResponse update();
 
-    public abstract void render(Actions action);
+    public abstract void render(ActionCommand action);
 
     public void changeRepeat(boolean repetir) {
         this.isRepeat = repetir;

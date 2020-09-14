@@ -1,6 +1,6 @@
 package br.com.narutomugen.game.entities.character;
 
-import br.com.narutomugen.game.entities.character.actions.Actions;
+import br.com.narutomugen.game.entities.character.actions.ActionCommand;
 import br.com.narutomugen.game.manager.actions.ActionComponent;
 
 public class MaquinaEstado {
@@ -15,7 +15,7 @@ public class MaquinaEstado {
         ponteiro = 0;
     }
 
-    public void transitar(Actions actions) {
+    public void transitar(ActionCommand actions) {
 
         ActionComponent estado = estados[actions.getValue()];
         estado.changeRepeat(true);
@@ -50,7 +50,7 @@ public class MaquinaEstado {
         return estadoAtual.getId() == value;
     }
 
-    public boolean comparar(Actions estado) {
+    public boolean comparar(ActionCommand estado) {
         return estadoAtual.getId() == estado.getValue();
     }
 
