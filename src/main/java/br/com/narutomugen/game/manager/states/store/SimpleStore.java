@@ -32,8 +32,8 @@ public class SimpleStore<T> implements Store<T> {
     }
 
     @Override
-    public void update() {
-        return;
+    public T update() {
+        return null;
     }
 
     @Override
@@ -51,6 +51,15 @@ public class SimpleStore<T> implements Store<T> {
     @Override
     public List<T> getAllElements() {
         return Arrays.asList(oldValue,value);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        if(oldValue == null && value == null){
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

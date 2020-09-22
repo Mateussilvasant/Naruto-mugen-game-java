@@ -46,6 +46,7 @@ public abstract class Motor {
 		if (fatorDelta < 1) {
 			// Atualiza o conteudo da tela
 			this.atualizar();
+
 		}
 
 		// Momento da ultima atualizacao

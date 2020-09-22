@@ -15,7 +15,11 @@ public class SimpleStack<T> implements Store<T> {
         this.maxElements = maxElements;
     }
 
-    @Override
+    public SimpleStack() {
+        stack = new ArrayList<T>();
+	}
+
+	@Override
     public T getLast() {
         if (stack.size() >= 1) {
             return stack.get(0);
@@ -47,8 +51,8 @@ public class SimpleStack<T> implements Store<T> {
     }
 
     @Override
-    public void update() {
-        stack.remove(0);
+    public T update() {
+        return stack.remove(0);
     }
 
     @Override
@@ -67,6 +71,11 @@ public class SimpleStack<T> implements Store<T> {
     @Override
 	public List<T> getAllElements() {
 		return stack;
+	}
+
+    @Override
+	public boolean isEmpty() {
+		return stack.isEmpty();
 	}
 
 }

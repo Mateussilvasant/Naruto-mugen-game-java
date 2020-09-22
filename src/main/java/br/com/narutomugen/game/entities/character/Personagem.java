@@ -153,7 +153,7 @@ public abstract class Personagem {
 	}
 
 	public void atualizarMecanicas() {
-		System.out.println("Estado Atual: " + controleEstado.getEstadoAtual().getId() + " Estado Anterior: "+ controleEstado.getEstadoAnterior().getId());
+		//System.out.println("Estado Atual: " + controleEstado.getEstadoAtual().getId() + " Estado Anterior: "+ controleEstado.getEstadoAnterior().getId());
 
 		controleEstado.getEstadoAtual().dispatch();
 

@@ -3,6 +3,7 @@ package br.com.narutomugen.game.app;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
@@ -57,6 +58,10 @@ public abstract class JogoApp extends Application {
 
 	public Stage getEstagio() {
 		return estagio;
+	}
+
+	public Pane getViewPane() {
+		return painel;
 	}
 
 }

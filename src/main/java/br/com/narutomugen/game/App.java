@@ -12,8 +12,8 @@ public final class App extends JogoApp {
     @Override
     public void onStart() {
         NarutoMugen jogoObjeto = new NarutoMugen(getLarguraWindow(), getAlturaWindow(), this);
-        jogoObjeto.prepararPartida();
         adicionarComponente(jogoObjeto.getCanvas());
+        jogoObjeto.prepararPartida();
         Motor.iniciar();
     }
 
@@ -39,7 +39,7 @@ public final class App extends JogoApp {
     }
 
     public static void main(String[] args) {
-        //configurarPropriedades();
+        configurarPropriedades();
         launch(args);
     }
 

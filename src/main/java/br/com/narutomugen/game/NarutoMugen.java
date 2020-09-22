@@ -38,8 +38,8 @@ public class NarutoMugen extends JogoAdapter {
 
 		int y = (int) (alt * 0.843);
 
-		playerOne = new Jogador(new HatakeKakashi(x1, y, getRender(), false), getTecladoEvent(), ETipoControle.PLAYER1);
-		playerTwo = new Jogador(new HatakeKakashi(x2, y, getRender(), true), getTecladoEvent(), ETipoControle.PLAYER2);
+		playerOne = new Jogador(new HatakeKakashi(x1, y,getJogoApp().getViewPane() , getRender(), false), getTecladoEvent(), ETipoControle.PLAYER1);
+		//playerTwo = new Jogador(new HatakeKakashi(x2, y, getJogoApp().getViewPane(), getRender(), true), getTecladoEvent(), ETipoControle.PLAYER2);
 	}
 
 	private void limparContexto() {

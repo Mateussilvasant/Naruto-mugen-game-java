@@ -2,17 +2,15 @@ package br.com.narutomugen.game.particles;
 
 import java.util.List;
 
-import br.com.narutomugen.game.graphics.Render;
+import javafx.scene.layout.Pane;
 
 public abstract class Emissor {
-    protected Render render;
+    protected Pane view;
 
-    public Emissor(Render render) {
-        this.render = render;
+    public Emissor(Pane view) {
+        this.view = view;
     }
 
-    protected abstract List<Particula> emitir(double x, double y);
-
-    protected abstract void update(double x, double y);
+    protected abstract void update();
 
 }

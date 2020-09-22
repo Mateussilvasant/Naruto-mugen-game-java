@@ -10,11 +10,13 @@ public interface Store<T> {
 
 	public void store(T next);
 
-	public void update();
+	public T update();
 
 	public T contains(T t);
 
 	List<T> getAllElements();
+
+	boolean isEmpty();
 
 
 }

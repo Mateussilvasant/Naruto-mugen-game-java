@@ -1,56 +1,110 @@
 package br.com.narutomugen.game.particles;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import br.com.narutomugen.game.graphics.Render;
+import br.com.narutomugen.game.manager.states.store.SimpleStack;
+import br.com.narutomugen.game.manager.states.store.Store;
 import javafx.geometry.Point2D;
+import javafx.scene.CacheHint;
 import javafx.scene.effect.BlendMode;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 public class EmissorFogo extends Emissor {
 
-	private List<Particula> particulas = new ArrayList<>();
+	private Pane pane;
 
-	public EmissorFogo(Render render) {
-		super(render);
-		particulas = new ArrayList<Particula>();
+	private Store<Particula> particles;
+
+	private final static int maxParticles = 1000;
+
+	private final int maxEmissionParticles = 5;
+
+	private Render render;
+
+	private Image imgParticle;
+
+	public EmissorFogo(Render render, Store<Particula> store, Pane view) {
+		super(view);
+
+		imgParticle = new Image(Particula.class.getResourceAsStream("/effects/particles/fireparticle4.png"), 64, 64,
+				true, false);
+
+		this.render = render;
+		this.particles = store;
+
+		pane = new Pane();
+		pane.setCacheShape(true);
+		pane.setCache(true);
+		pane.setCacheHint(CacheHint.SPEED);
+		pane.setBlendMode(BlendMode.ADD);
+
+		view.getChildren().add(pane);
 	}
 
-	@Override
-	protected List<Particula> emitir(double x, double y) {
-		int numeroParticulas = 15;
-		List<Particula> particulas = new ArrayList<>();
+	public EmissorFogo(Render render, Pane view) {
+		this(render, new SimpleStack<Particula>(maxParticles), view);
+	}
 
-		for (int i = 0; i < numeroParticulas; i++) {
-			Particula particula = new Particula(x, y,
-					new Point2D(Math.cos((Math.random() - 0.5) * 0.90), Math.sin(Math.random() * 0.5)), 10, 2.0,
+	public void load(int x, int y) {
+		loadParticules(maxParticles, x, y);
+	}
+
+	private void loadParticules(int numberParticles, int x, int y) {
+
+		particles.getAllElements().clear();
+
+		for (int i = 0; i < numberParticles; i++) {
+			Particula particle = new Particula();
+			particle.init(imgParticle,(int) ((Math.random() - 0.5) * x), (int) ((Math.random() - 0.5) *y),
+					new Point2D(Math.cos((Math.random() - 0.5) * 0.90), Math.sin(Math.random() * 1.0)), 10.0, 10.0,
 					Color.rgb(255, 51, 0), BlendMode.ADD);
-			particulas.add(particula);
+			particles.store(particle);
+			pane.getChildren().add(particle.getView());
 		}
 
-		return particulas;
+	}
+
+	private int emissionRate = 0;
+
+	@Override
+	public void update() {
+
+		if (!particles.isEmpty()) {
+
+			for (int i = 0; i <= (emissionRate * maxEmissionParticles) + maxEmissionParticles; i++) {
+
+				if (i < particles.getAllElements().size()) {
+
+					Particula particle = particles.getAllElements().get(i);
+
+					if (!particle.estaVivo()) {
+
+						Particula particleRemoved = particles.update();
+						particleRemoved.clear();
+
+						particles.store(particleRemoved);
+
+					} else {
+						particle.update();
+						particle.render(i % 8 == 0);
+					}
+
+				} else {
+					break;
+				}
+			}
+
+		} else {
+			resetar();
+		}
+		emissionRate++;
+
 	}
 
 	public void resetar() {
-		particulas.clear();
-	}
-
-	@Override
-	public void update(double x, double y) {
-		particulas.addAll(emitir(x, y));
-
-		for (Iterator<Particula> it = particulas.iterator(); it.hasNext();) {
-			Particula particula = it.next();
-			particula.update();
-
-			if (!particula.estaVivo()) {
-				it.remove();
-				continue;
-			}
-			particula.render(render.getContexto());
-		}
+		particles.getAllElements().clear();
+		pane.getChildren().removeAll();
 	}
 
 }

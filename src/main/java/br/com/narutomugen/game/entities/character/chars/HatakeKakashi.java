@@ -7,14 +7,15 @@ import br.com.narutomugen.game.graphics.Render;
 import br.com.narutomugen.game.graphics.textures.TexturaSprite;
 import br.com.narutomugen.game.manager.actions.ActionComponent;
 import br.com.narutomugen.game.particles.EmissorFogo;
+import javafx.scene.layout.Pane;
 
 public class HatakeKakashi extends Personagem {
 
 	public EmissorFogo katonJutsu;
 
-	public HatakeKakashi(int x, int y, Render render, boolean invertido) {
+	public HatakeKakashi(int x, int y, Pane view, Render render, boolean invertido) {
 		super(x, y, invertido);
-		carregarRecursos(render, invertido);
+		carregarRecursos(render, view,invertido);
 		carregarEstados();
 	}
 
@@ -23,13 +24,14 @@ public class HatakeKakashi extends Personagem {
 
 			@Override
 			public boolean action() {
-				katonJutsu.update(getEixoX(), getEixoY() - getWidth());
+				katonJutsu.update();
 				return false;
 			}
 		});
 	}
 
-	private void carregarRecursos(Render render, boolean invertido) {
+	private void carregarRecursos(Render render, Pane view, boolean invertido) {
+		
 		TexturaSprite texturaParado = new TexturaSprite();
 		texturaParado.carregarTextura("/personagens/kakashi/tiles/Parado", 1.0);
 
@@ -50,7 +52,9 @@ public class HatakeKakashi extends Personagem {
 		mapaSprites.put(ActionCommand.PULAR.getValue(), new Sprite(render, texturaPulando, 7, invertido));
 		mapaSprites.put(ActionCommand.INICIAL.getValue(), new Sprite(render, texturaIntro, 1, invertido, false));
 
-		katonJutsu = new EmissorFogo(render);
+		katonJutsu = new EmissorFogo(render,view);
+		katonJutsu.load(146, 260);
+
 	}
 
 	public void atualizarMecanicas() {
