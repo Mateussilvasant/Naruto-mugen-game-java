@@ -6,11 +6,11 @@ import br.com.narutomugen.game.entities.character.actions.ActionCommand;
 
 public abstract class Action extends ActionState {
 
-    public HashMap<ActionCommand, SubAction> subActions;
+    public HashMap<ActionCommand, SubAction> children;
 
     public Action(ActionCommand actionID) {
         super(actionID);
-        subActions = new HashMap<>();
+        children = new HashMap<>();
     }
 
     @Override
@@ -24,7 +24,7 @@ public abstract class Action extends ActionState {
     }
 
     public HashMap<ActionCommand,SubAction> getSubActions(){
-        return subActions;
+        return children;
     }
 
 

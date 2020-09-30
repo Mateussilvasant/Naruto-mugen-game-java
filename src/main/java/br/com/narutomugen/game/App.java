@@ -6,7 +6,7 @@ import br.com.narutomugen.game.engine.Motor;
 public final class App extends JogoApp {
 
     public App() {
-        super(1.10);
+        super(1.50);
     }
 
     @Override
@@ -39,7 +39,7 @@ public final class App extends JogoApp {
     }
 
     public static void main(String[] args) {
-        configurarPropriedades();
+        //configurarPropriedades();
         launch(args);
     }
 

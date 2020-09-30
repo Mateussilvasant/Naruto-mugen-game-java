@@ -14,13 +14,13 @@ public class Jogador {
 		tecladoEvent = event;
 	}
 
-	public void atualizarMecanicas() {
+	public void atualizarMecanicas(double delta) {
 		capturarComando();
-		personagem.atualizarMecanicas();
+		personagem.atualizarMecanicas(delta);
 	}
 
-	public void atualizarAnimacoes() {
-		personagem.atualizarAnimacoes();
+	public void atualizarAnimacoes(double delta) {
+		personagem.atualizarAnimacoes(delta);
 	}
 
 	private void capturarComando() {

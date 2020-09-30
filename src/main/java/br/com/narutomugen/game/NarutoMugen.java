@@ -2,6 +2,7 @@ package br.com.narutomugen.game;
 
 import br.com.narutomugen.game.app.JogoAdapter;
 import br.com.narutomugen.game.app.JogoApp;
+import br.com.narutomugen.game.engine.Motor;
 import br.com.narutomugen.game.entities.character.chars.HatakeKakashi;
 import br.com.narutomugen.game.events.player.ETipoControle;
 import br.com.narutomugen.game.events.player.Jogador;
@@ -38,8 +39,10 @@ public class NarutoMugen extends JogoAdapter {
 
 		int y = (int) (alt * 0.843);
 
-		playerOne = new Jogador(new HatakeKakashi(x1, y,getJogoApp().getViewPane() , getRender(), false), getTecladoEvent(), ETipoControle.PLAYER1);
-		//playerTwo = new Jogador(new HatakeKakashi(x2, y, getJogoApp().getViewPane(), getRender(), true), getTecladoEvent(), ETipoControle.PLAYER2);
+		playerOne = new Jogador(new HatakeKakashi(x1, y, getJogoApp().getViewPane(), getRender(), false),
+				getTecladoEvent(), ETipoControle.PLAYER1);
+		// playerTwo = new Jogador(new HatakeKakashi(x2, y, getJogoApp().getViewPane(),
+		// getRender(), true), getTecladoEvent(), ETipoControle.PLAYER2);
 	}
 
 	private void limparContexto() {
@@ -54,9 +57,8 @@ public class NarutoMugen extends JogoAdapter {
 		limparContexto();
 		cenario();
 
-
-		playerOne.atualizarMecanicas();
-		playerOne.atualizarAnimacoes();
+		playerOne.atualizarMecanicas(Motor.getDelta());
+		playerOne.atualizarAnimacoes(Motor.getDelta());
 
 
 		getJogoApp().getEstagio().setTitle("FPS: " + getFPS());
@@ -70,6 +72,7 @@ public class NarutoMugen extends JogoAdapter {
 			ImageView imageView = new ImageView(
 					new Image(NarutoMugen.class.getResourceAsStream("/cenarios/konohavila/konohavila.png"),
 							getJogoApp().getLarguraWindow(), getJogoApp().getAlturaWindow(), false, false));
+			imageView.setBlendMode(BlendMode.RED);
 
 			gc.Cenarios.add(imageView);
 

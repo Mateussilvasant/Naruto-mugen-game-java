@@ -82,7 +82,7 @@ public class ActionEntityManagerTest {
 
         };
 
-        action1.subActions.put(ActionCommand.INICIAL, subaction1);
+        action1.children.put(ActionCommand.INICIAL, subaction1);
 
         actions.put(ActionCommand.PARADO, action1);
         actions.put(ActionCommand.INICIAL, subaction1);

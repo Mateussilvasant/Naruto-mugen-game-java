@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import br.com.narutomugen.game.sceneries.GerenciadorCenarios;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -38,5 +39,9 @@ public class Render {
     public GraphicsContext getContexto() {
         return contexto;
     }
+
+	public void addblendMode(BlendMode blend) {
+        contexto.setGlobalBlendMode(blend);
+	}
 
 }

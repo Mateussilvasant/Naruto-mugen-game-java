@@ -3,19 +3,19 @@ package br.com.narutomugen.game.entities.character.chars;
 import br.com.narutomugen.game.animation.Sprite;
 import br.com.narutomugen.game.entities.character.Personagem;
 import br.com.narutomugen.game.entities.character.actions.ActionCommand;
+import br.com.narutomugen.game.entities.character.jutsus.katon.Goukakyuu;
 import br.com.narutomugen.game.graphics.Render;
 import br.com.narutomugen.game.graphics.textures.TexturaSprite;
 import br.com.narutomugen.game.manager.actions.ActionComponent;
-import br.com.narutomugen.game.particles.EmissorFogo;
 import javafx.scene.layout.Pane;
 
 public class HatakeKakashi extends Personagem {
 
-	public EmissorFogo katonJutsu;
+	public Goukakyuu katonJutsu;
 
 	public HatakeKakashi(int x, int y, Pane view, Render render, boolean invertido) {
 		super(x, y, invertido);
-		carregarRecursos(render, view,invertido);
+		carregarRecursos(render, view, invertido);
 		carregarEstados();
 	}
 
@@ -23,15 +23,20 @@ public class HatakeKakashi extends Personagem {
 		controleEstado.adicionarEstado(new ActionComponent(ActionCommand.PODER_1) {
 
 			@Override
-			public boolean action() {
-				katonJutsu.update();
-				return false;
+			public boolean action(double delta) {
+				katonJutsu.update(delta);
+
+				if (katonJutsu.emissionEnd()) {
+					katonJutsu.clear();
+					return false;
+				}
+				return true;
 			}
 		});
 	}
 
 	private void carregarRecursos(Render render, Pane view, boolean invertido) {
-		
+
 		TexturaSprite texturaParado = new TexturaSprite();
 		texturaParado.carregarTextura("/personagens/kakashi/tiles/Parado", 1.0);
 
@@ -52,13 +57,12 @@ public class HatakeKakashi extends Personagem {
 		mapaSprites.put(ActionCommand.PULAR.getValue(), new Sprite(render, texturaPulando, 7, invertido));
 		mapaSprites.put(ActionCommand.INICIAL.getValue(), new Sprite(render, texturaIntro, 1, invertido, false));
 
-		katonJutsu = new EmissorFogo(render,view);
-		katonJutsu.load(146, 260);
+		katonJutsu = new Goukakyuu(view,146,260);
 
 	}
 
-	public void atualizarMecanicas() {
-		super.atualizarMecanicas();
+	public void atualizarMecanicas(double delta) {
+		super.atualizarMecanicas(delta);
 	}
 
 	@Override
@@ -67,9 +71,9 @@ public class HatakeKakashi extends Personagem {
 	}
 
 	@Override
-	public void atualizarAnimacoes() {
+	public void atualizarAnimacoes(double delta) {
 		if (controleEstado.comparar(ActionCommand.PODER_1)) {
-			controleEstado.getEstadoAtual().dispatch();
+			controleEstado.getEstadoAtual().dispatch(delta);
 		}
 
 	}
@@ -79,7 +83,6 @@ public class HatakeKakashi extends Personagem {
 		if (!controleEstado.verificaEstadoAtual(ActionCommand.INICIAL.getValue())) {
 			if (!controleEstado.getEstadoAtual().isRepeat()) {
 				controleEstado.transitar(ActionCommand.PARADO);
-				katonJutsu.resetar();
 			}
 		}
 

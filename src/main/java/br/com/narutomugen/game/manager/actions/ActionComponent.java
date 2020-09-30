@@ -11,11 +11,6 @@ public abstract class ActionComponent {
         id = eTipoEstado.getValue();
         isRepeat = true;
     }
-    public abstract boolean action();
-
-    public boolean dispatch() {
-	    return isRepeat = action();
-    }
 
     public void changeRepeat(final boolean repetir) {
         this.isRepeat = repetir;
@@ -28,6 +23,10 @@ public abstract class ActionComponent {
     public int getId() {
         return id;
     }
+	public boolean dispatch(double delta) {
+        return isRepeat = action(delta);
+	}
 
+    public abstract boolean action(double delta);
 
 }

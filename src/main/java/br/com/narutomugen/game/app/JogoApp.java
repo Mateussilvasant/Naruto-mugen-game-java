@@ -35,7 +35,7 @@ public abstract class JogoApp extends Application {
 	public void iniciarComponentes(Stage stage) {
 		estagio = stage;
 		alturaWindow = ((Screen.getPrimary().getVisualBounds().getHeight() / 2) * escalaWindow);
-		larguraWindow = ((Screen.getPrimary().getVisualBounds().getWidth() / 2) * escalaWindow);
+		larguraWindow = ((Screen.getPrimary().getVisualBounds().getWidth() / 1.5) * escalaWindow);
 		painel = new StackPane(new Rectangle(larguraWindow, alturaWindow));
 		cena = new Scene(painel);
 	}

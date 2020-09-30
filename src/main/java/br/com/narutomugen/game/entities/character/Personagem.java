@@ -46,7 +46,7 @@ public abstract class Personagem {
 		controleEstado.adicionarEstado(new ActionComponent(ActionCommand.CORRER_DIREITA) {
 
 			@Override
-			public boolean action() {
+			public boolean action(double delta) {
 				direcao = EDirecao.DIREITA;
 				eixoX = eixoX + (getVelocidade() * Motor.getDelta());
 				mapaSprites.get(ActionCommand.CORRER_DIREITA.getValue()).animar(getEixoX(), getEixoY());
@@ -60,7 +60,7 @@ public abstract class Personagem {
 		controleEstado.adicionarEstado(new ActionComponent(ActionCommand.CORRER_ESQUERDA) {
 
 			@Override
-			public boolean action() {
+			public boolean action(double delta) {
 				direcao = EDirecao.ESQUERDA;
 				eixoX = eixoX - (getVelocidade() * Motor.getDelta());
 				mapaSprites.get(ActionCommand.CORRER_ESQUERDA.getValue()).animar(getEixoX(), getEixoY());
@@ -73,7 +73,7 @@ public abstract class Personagem {
 		controleEstado.adicionarEstado(new ActionComponent(ActionCommand.PARADO) {
 
 			@Override
-			public boolean action() {
+			public boolean action(double delta) {
 				Sprite paradoSprite = mapaSprites.get(ActionCommand.PARADO.getValue());
 				verificarDirecaoSprite(paradoSprite);
 				paradoSprite.animar(getEixoX(), getEixoY());
@@ -87,7 +87,7 @@ public abstract class Personagem {
 		controleEstado.adicionarEstado(new ActionComponent(ActionCommand.PULAR) {
 
 			@Override
-			public boolean action() {
+			public boolean action(double delta) {
 				Sprite spritePular = mapaSprites.get(ActionCommand.PULAR.getValue());
 				verificarDirecaoSprite(spritePular);
 
@@ -116,7 +116,7 @@ public abstract class Personagem {
 		controleEstado.adicionarEstado(new ActionComponent(ActionCommand.INICIAL) {
 
 			@Override
-			public boolean action() {
+			public boolean action(double delta) {
 				Sprite spriteInicial = mapaSprites.get(ActionCommand.INICIAL.getValue());
 				spriteInicial.animar(getEixoX(), getEixoY());
 
@@ -152,15 +152,15 @@ public abstract class Personagem {
 
 	}
 
-	public void atualizarMecanicas() {
+	public void atualizarMecanicas(double delta) {
 		//System.out.println("Estado Atual: " + controleEstado.getEstadoAtual().getId() + " Estado Anterior: "+ controleEstado.getEstadoAnterior().getId());
 
-		controleEstado.getEstadoAtual().dispatch();
+		controleEstado.getEstadoAtual().dispatch(delta);
 
 
 	}
 
-	public abstract void atualizarAnimacoes();
+	public abstract void atualizarAnimacoes(double delta);
 
 	public void correrParaDireita() {
 		controleEstado.transitar(ActionCommand.CORRER_DIREITA);
