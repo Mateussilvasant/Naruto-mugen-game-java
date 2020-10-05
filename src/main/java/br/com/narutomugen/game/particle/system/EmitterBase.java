@@ -1,5 +1,7 @@
 package br.com.narutomugen.game.particle.system;
 
+import java.util.function.Function;
+
 import br.com.narutomugen.game.manager.states.store.SimpleStack;
 import br.com.narutomugen.game.manager.states.store.Store;
 import javafx.geometry.Point2D;
@@ -7,7 +9,7 @@ import javafx.scene.CacheHint;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Ellipse;
+import javafx.scene.shape.Circle;
 
 public abstract class EmitterBase implements IEmitterLoader {
 
@@ -33,7 +35,8 @@ public abstract class EmitterBase implements IEmitterLoader {
     protected Pane createPane() {
         Pane pane = new Pane();
         pane.setCache(true);
-        pane.setCacheHint(CacheHint.QUALITY);
+        pane.setCacheHint(CacheHint.SPEED);
+        pane.setCacheShape(true);
         pane.setBlendMode(blendMode);
         return pane;
     }
@@ -43,7 +46,7 @@ public abstract class EmitterBase implements IEmitterLoader {
         gameView.getChildren().add(particlesRegion);
     }
 
-    protected abstract void createParticles(double particleTime);
+    protected abstract void createParticles(double particleTime, Function<Particle, Point2D> equationMotion);
 
     public void update(double delta, Point2D currentPoint) {
 
@@ -61,7 +64,7 @@ public abstract class EmitterBase implements IEmitterLoader {
         if (particle.getParticleView() instanceof ImageView) {
             particlesRegion.getChildren().add((ImageView) particle.getParticleView());
         } else {
-            particlesRegion.getChildren().add((Ellipse) particle.getParticleView());
+            particlesRegion.getChildren().add((Circle) particle.getParticleView());
         }
 
     }

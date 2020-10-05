@@ -60,7 +60,6 @@ public class NarutoMugen extends JogoAdapter {
 		playerOne.atualizarMecanicas(Motor.getDelta());
 		playerOne.atualizarAnimacoes(Motor.getDelta());
 
-
 		getJogoApp().getEstagio().setTitle("FPS: " + getFPS());
 	}
 

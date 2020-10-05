@@ -25,21 +25,26 @@ public final class App extends JogoApp {
 
         System.setProperty("prism.forceGPU", "true");
 
-        System.setProperty("prism.order", "sw,es1,d3d");
+        System.setProperty("prism.order", "d3d,sw");
 
         System.setProperty("prism.targetvram", "2G");
 
         System.setProperty("prism.vsync", "false");
 
-        System.setProperty("javafx.animation.framerate", "30");
+        System.setProperty("prism.supershader", "true");
 
-        System.setProperty("prism.disableRegionCaching", "false");
+        System.setProperty("javafx.animation.fullspeed", "true");
+
+        System.setProperty("quantum.singlethreaded", "false");
 
         System.setProperty("prism.allowhidpi", "false");
+
+        System.setProperty("javafx.animation.framerate", "true");
+
     }
 
     public static void main(String[] args) {
-        //configurarPropriedades();
+        configurarPropriedades();
         launch(args);
     }
 

@@ -26,7 +26,7 @@ public class ParticleEmitter extends EmitterBase {
 
     private int maxDuration;
 
-    private Function<Point2D, Point2D> vectorVelocity;
+    private Function<Point2D, Point2D> equationVelocity;
 
     private Point2D initialPosition;
 
@@ -49,47 +49,50 @@ public class ParticleEmitter extends EmitterBase {
     }
 
     @Override
-    public void initEmitter(Pane gameview, Function<Point2D, Point2D> vectorVelocity, BlendMode blending,
-            Color startColor, Color endColor, double particleRadius, int maxEmissionParticles, double particleTime,
-            int time) {
+    public void initEmitter(Pane gameview, Function<Particle, Point2D> equationMotion,
+            Function<Point2D, Point2D> equationVelocity, BlendMode blending, Color startColor, Color endColor,
+            double particleRadius, int maxEmissionParticles, double particleTime, int time) {
         this.blendMode = blending;
         this.maxEmissionParticles = maxEmissionParticles;
         this.maxDuration = time;
-        this.vectorVelocity = vectorVelocity;
+        this.equationVelocity = equationVelocity;
         this.particleRadius = particleRadius;
         this.startColor = startColor;
         this.endColor = endColor;
 
         loadBackground(gameview);
-        createParticles(particleTime);
+        createParticles(particleTime, equationMotion);
     }
 
     @Override
-    public void initEmitter(Pane gameview, Function<Point2D, Point2D> vectorVelocity, BlendMode blending, Image texture,
-            double particleRadius, int maxEmissionParticles, double particleTime, int time) {
+    public void initEmitter(Pane gameview, Function<Particle, Point2D> equationMotion,
+            Function<Point2D, Point2D> equationVelocity, BlendMode blending, Image texture, double particleRadius,
+            int maxEmissionParticles, double particleTime, int time) {
         this.blendMode = blending;
         this.maxEmissionParticles = maxEmissionParticles;
         this.maxDuration = time;
-        this.vectorVelocity = vectorVelocity;
+        this.equationVelocity = equationVelocity;
         this.texture = texture;
         this.particleRadius = particleRadius;
 
         loadBackground(gameview);
-        createParticles(particleTime);
+        createParticles(particleTime, equationMotion);
     }
 
     @Override
-    protected void createParticles(double particleTime) {
+    protected void createParticles(double particleTime, Function<Particle, Point2D> equationMotion) {
 
         for (int i = 0; i < maxParticles; i++) {
 
             Particle particle = new Particle();
 
+            Point2D velocity = equationVelocity != null ? equationVelocity.apply(null) : Point2D.ZERO;
+
             if (texture != null) {
-                particle.newParticleTexture(initialPosition, vectorVelocity.apply(null), particleRadius, particleTime,
+                particle.newParticleTexture(initialPosition, equationMotion, velocity, particleRadius, particleTime,
                         texture);
             } else {
-                particle.newParticleNode(initialPosition, vectorVelocity.apply(null), particleRadius, particleTime,
+                particle.newParticleNode(initialPosition, equationMotion, velocity, particleRadius, particleTime,
                         startColor, endColor);
             }
 
@@ -130,8 +133,8 @@ public class ParticleEmitter extends EmitterBase {
                         Particle particleRemoved = store.update();
 
                         if (!lastEmission) {
-                            particleRemoved.clear();
                             store.store(particleRemoved);
+                            particleRemoved.clear();
                         }
 
                     } else {
