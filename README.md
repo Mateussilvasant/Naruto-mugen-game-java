@@ -1,7 +1,6 @@
-# Naruto Mugen - Jogo de Luta baseado no Naruto shippuden: Shinobi Rumble em JavaFx.
+# Naruto Mugen - Fighting Game based on Naruto shippuden: Shinobi Rumble in Java based on libgdx
 
-Desenvolvimento de um Jogo chamado NarutoMugen2D, utilizando a linguagem Java juntamento com JavaFX, 
-estilo de Luta 1 vs 1 em dimensão 2D, utilizando artes pixeladas, com um gameloop próprio.
+Development of a Game called NarutoMugen2D of Fighting style 1 vs 1 in 2D dimension, using pixelated arts using a proper 2D fighting system
 
 
 
