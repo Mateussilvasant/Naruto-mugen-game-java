@@ -2,6 +2,7 @@ package br.com.mateussilvasant.narutomugen.core.particle.system;
 
 import java.util.function.Function;
 
+import br.com.mateussilvasant.narutomugen.core.gamecore.GameManager;
 import br.com.mateussilvasant.narutomugen.core.gamecore.framework.graphics.BlendMode;
 import br.com.mateussilvasant.narutomugen.core.gamecore.framework.graphics.IGameRenderer;
 import br.com.mateussilvasant.narutomugen.core.gamecore.framework.graphics.paint.ColorG;
@@ -15,14 +16,14 @@ public class ParticleEmitter extends EmitterBase {
     private ITextureImage texture;
     private ColorG startColor;
     private ColorG endColor;
-    private double particleRadius;
+    private float particleRadius;
 
     private int maxParticles;
     private int maxEmissionParticles;
-    private int maxDuration;
+    private float maxDuration;
 
-    private double emissionRate;
-    private double durationEmission;
+    private float emissionRate;
+    private float durationEmission;
     private boolean lastEmission;
     private boolean emissionEnd;
 
@@ -35,12 +36,12 @@ public class ParticleEmitter extends EmitterBase {
         super(maxParticles);
         this.maxParticles = maxParticles;
         this.maxEmissionParticles = 1;
-        this.emissionRate = 0.0;
+        this.emissionRate = 0.0f;
         this.lastEmission = false;
         this.emissionEnd = false;
-        this.durationEmission = 0.0;
+        this.durationEmission = 0.0f;
         this.maxDuration = 0;
-        this.particleRadius = 32.0;
+        this.particleRadius = 32.0f;
     }
 
     @Override
@@ -48,7 +49,7 @@ public class ParticleEmitter extends EmitterBase {
             Function<Vector2D, Vector2D> equationVelocity, BlendMode blending,
             ColorG startColor,
             ColorG endColor,
-            double particleRadius, int maxEmissionParticles, double particleTime, int time) {
+            float particleRadius, int maxEmissionParticles, float particleTime, float time) {
         this.blendMode = blending;
         this.maxEmissionParticles = maxEmissionParticles;
         this.maxDuration = time;
@@ -64,8 +65,9 @@ public class ParticleEmitter extends EmitterBase {
     public void initEmitter(Function<Particle, Vector2D> equationMotion,
             Function<Vector2D, Vector2D> equationVelocity, BlendMode blending,
             ITextureImage texture, ColorG startColor,
-            ColorG endColor, double particleRadius,
-            int maxEmissionParticles, double particleTime, int time) {
+            ColorG endColor,
+            float particleRadius,
+            int maxEmissionParticles, float particleTime, float time) {
         this.blendMode = blending;
         this.maxEmissionParticles = maxEmissionParticles;
         this.maxDuration = time;
@@ -118,7 +120,7 @@ public class ParticleEmitter extends EmitterBase {
 
             emitParticles(delta, gameRenderer);
 
-            durationEmission = durationEmission + delta;
+            durationEmission = durationEmission + GameManager.DELTA_RAW();
             emissionRate++;
 
             if (durationEmission > maxDuration) {
@@ -175,8 +177,8 @@ public class ParticleEmitter extends EmitterBase {
     public void clear() {
         particles = particlesTemp;
         particlesTemp = new SimpleStack<Particle>(maxParticles);
-        emissionRate = 0.0;
-        durationEmission = 0.0;
+        emissionRate = 0.0f;
+        durationEmission = 0.0f;
         // lastEmission.set(false);
         emissionEnd = false;
     }

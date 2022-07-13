@@ -12,13 +12,15 @@ public interface IEmitterLoader {
         public void initEmitter(Function<Particle, Vector2D> equationMotion,
                         Function<Vector2D, Vector2D> equationVelocity, BlendMode blending,
                         ColorG startColor,
-                        ColorG endColor, double particleRadius, int maxEmissionParticles, double particleTime,
-                        int time);
+                        ColorG endColor,
+                        float particleRadius, int maxEmissionParticles,
+                        float particleTime,
+                        float time);
 
         public void initEmitter(Function<Particle, Vector2D> equationMotion,
                         Function<Vector2D, Vector2D> equationVelocity, BlendMode blending,
                         ITextureImage texture, ColorG startColor,
                         ColorG endColor,
-                        double particleRadius, int maxEmissionParticles, double particleTime, int time);
+                        float particleRadius, int maxEmissionParticles, float particleTime, float time);
 
 }

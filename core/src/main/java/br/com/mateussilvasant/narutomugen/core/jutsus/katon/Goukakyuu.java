@@ -21,12 +21,12 @@ public class Goukakyuu implements IEmitter {
 
 	private Vector2D currentPosition;
 	private EDirection direction;
-	private double currentAngularVelocity = 0;
+	private float currentAngularVelocity = 0;
 
 	// constants
-	private final double RADIUS = 80;
-	private final double ACCELERATION = (2 * Math.PI) / 5;
-	private final int GAP_CENTER_POINT = 34;
+	private final float ACCELERATION = 2.51f;
+	private final float RADIUS = 80;
+	private final int GAP_CENTER_POINT = (int) (RADIUS * 0.50);
 
 	public Goukakyuu(int x, int y, EDirection direction) {
 
@@ -38,15 +38,15 @@ public class Goukakyuu implements IEmitter {
 		final BlendMode blendMode = BlendMode.MULTIPLY;
 		final ColorG startColor = ColorG.hex("#ff3c00");
 		final ColorG endColor = ColorG.hex("#ffed00");
-		final double particleRadius = 52;
-		final int maxEmissionParticles = 10;
-		final double particleTime = 2.0;
-		final int time = 2;
+		final float particleRadius = 52;
+		final int maxEmissionParticles = 20;
+		final float particleTime = 1.0f;
+		final float time = 0.60f;
 
 		texture = new TextureImage();
 		texture.loadTextureByFile("/effects/particles/fire_base.png", (int) particleRadius, (int) particleRadius);
 
-		fireballEmitter = new ParticleEmitter(800);
+		fireballEmitter = new ParticleEmitter(1000);
 		fireballEmitter.setInitialPosition(currentPosition);
 		fireballEmitter.initEmitter(equationMotion, equationVelocity,
 				blendMode,
@@ -79,9 +79,9 @@ public class Goukakyuu implements IEmitter {
 	private void updateJutsuPosition(double delta) {
 
 		if (direction.equals(EDirection.LEFT)) {
-			currentPosition = currentPosition.add(300 * delta, 0);
+			currentPosition = currentPosition.add(600 * delta, 0);
 		} else {
-			currentPosition = currentPosition.subtract(300 * delta, 0);
+			currentPosition = currentPosition.subtract(600 * delta, 0);
 		}
 
 	}
@@ -90,8 +90,8 @@ public class Goukakyuu implements IEmitter {
 
 		currentAngularVelocity += ACCELERATION * GameManager.DELTA_TIME();
 
-		double distance = RADIUS;
-		double newRadius = RADIUS - currentAngularVelocity;
+		float distance = RADIUS;
+		float newRadius = RADIUS - currentAngularVelocity;
 
 		if (newRadius >= -1) {
 			distance = newRadius;
